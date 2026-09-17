@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+<!-- Injeção direta de CSS para garantir o design na Hostinger -->
+<link href="https://jsdelivr.net" rel="stylesheet">
 
         @fonts
 
