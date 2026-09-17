@@ -12,24 +12,91 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     // Renderiza a Dashboard trazendo os dados relacionais salvos no banco
-    public function index()
+        public function index(Request $request)
     {
+        // 1. Busca Clientes e Projetos para alimentar os filtros laterais e seletores
         $clients = Client::orderBy('name', 'asc')->get();
         $projects = Project::with('client')->orderBy('name', 'asc')->get();
 
-        // Estrutura base de dados Python simulada temporariamente para retrocompatibilidade visual
-        $dadosPython = [
-            "marketing" => ["empresa" => "8ou80 Consultoria", "roi" => 0.0, "leads" => 0, "custo_captacao" => 0.0],
-            "clientes" => ["valor_contrato" => 0.0, "faturamento_estimado_mensal" => 0.0, "status" => "Planejamento"],
-            "pessoal" => [
-                "setembro" => ["entradas" => 0, "saidas" => 0, "saldo" => 0],
-                "outubro"  => ["entradas" => 0, "saidas" => 0, "saldo" => 0],
-                "novembro" => ["entradas" => 0, "saidas" => 0, "saldo" => 0]
-            ]
-        ];
+        // 2. Captura filtros de busca do painel analítico (Padrão: Primeiro projeto se houver)
+        $selectedProjectId = $request->get('project_id', $projects->first()?->id);
+        $selectedYear = $request->get('year', 2026);
+        $selectedMonth = $request->get('month', 9);
 
-        return view('dashboard', compact('clients', 'projects', 'dadosPython'));
+        // 3. Inicializa variáveis de transporte de dados limpas
+        $activeProject = null;
+        $metric = null;
+        $goal = null;
+        $alerts = [];
+        $cumprimentoMetas = ['receita' => 0, 'leads' => 0, 'clientes' => 0];
+
+        if ($selectedProjectId) {
+            $activeProject = Project::find($selectedProjectId);
+            
+            // Busca os dados brutos históricos daquele período específico
+            $metric = ProjectMetric::where('project_id', $selectedProjectId)
+                ->where('year', $selectedYear)
+                ->where('month', $selectedMonth)
+                ->where('channel', 'all')
+                ->first();
+
+            // Busca as metas estipuladas para o mesmo período
+            $goal = ProjectGoal::where('project_id', $selectedProjectId)
+                ->where('year', $selectedYear)
+                ->where('month', $selectedMonth)
+                ->first();
+
+            // 4. MOTOR ALGORÍTMICO DE DIAGNÓSTICO AUTOMÁTICO (Item 8)
+            if ($metric && $goal) {
+                // Cálculo de percentual de cumprimento de metas
+                $cumprimentoMetas['receita'] = $goal->goal_revenue > 0 ? ($metric->revenue_generated / $goal->goal_revenue) * 100 : 0;
+                $cumprimentoMetas['leads'] = $goal->goal_leads > 0 ? ($metric->leads / $goal->goal_leads) * 100 : 0;
+                $cumprimentoMetas['clientes'] = $goal->goal_clients > 0 ? ($metric->clients_acquired / $goal->goal_clients) * 100 : 0;
+
+                // Regra de Alerta 1: Custo por Lead (CPL) vs Meta
+                if ($metric->leads > 0 && $goal->goal_leads > 0) {
+                    $cplAtual = $metric->investment_total / $metric->leads;
+                    // Se as oportunidades caíram em relação à conversão de leads
+                    if ($metric->lead_conversion_rate < 15) {
+                        $alerts[] = [
+                            'type' => 'danger',
+                            'message' => 'Anomalia no Funil: O volume de Leads aumentou, mas a taxa de conversão para Oportunidades caiu abaixo de 15%.'
+                        ];
+                    }
+                }
+
+                // Regra de Alerta 2: Estouro de CAC em relação ao teto máximo configurado
+                if ($metric->cac > $goal->max_cac && $goal->max_cac > 0) {
+                    $alerts[] = [
+                        'type' => 'danger',
+                        'message' => 'Estouro de Custo: O CAC atual (R$ ' . number_format($metric->cac, 2, ',', '.') . ') ultrapassou o teto máximo estipulado pela gerência (R$ ' . number_format($goal->max_cac, 2, ',', '.') . ').'
+                    ];
+                }
+
+                // Regra de Alerta 3: Retorno sobre o investimento abaixo da meta
+                if ($metric->roi < $goal->min_roi) {
+                    $alerts[] = [
+                        'type' => 'warning',
+                        'message' => 'Desempenho Crítico: O ROI obtido no ciclo (' . number_format($metric->roi, 1) . '%) está abaixo da meta mínima exigida (' . number_format($goal->min_roi, 1) . '%).'
+                    ];
+                }
+
+                // Regra de Alerta 4: Crescimento saudável ou cumprimento acima de 100%
+                if ($cumprimentoMetas['receita'] >= 100) {
+                    $alerts[] = [
+                        'type' => 'success',
+                        'message' => 'Sucesso Operacional: A meta de faturamento alocada para o período foi totalmente superada (' . number_format($cumprimentoMetas['receita'], 1) . '% de cumprimento).'
+                    ];
+                }
+            }
+        }
+
+        return view('dashboard', compact(
+            'clients', 'projects', 'activeProject', 'metric', 'goal', 
+            'alerts', 'cumprimentoMetas', 'selectedProjectId', 'selectedYear', 'selectedMonth'
+        ));
     }
+
 
     // Gravação de Clientes (Requisito 2)
     public function storeClient(Request $request)

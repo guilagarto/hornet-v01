@@ -42,7 +42,29 @@
                 <h2 class="exec-title">💼 Módulo Interno Administrativo — Agência 8ou80</h2>
                 <span class="agency-badge">Painel de Gestão MVP</span>
             </div>
-            
+                        <!-- Filtro Global de Análise Gerencial -->
+            <div style="background: white; padding: 15px 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 20px;">
+                <form action="{{ route('dashboard') }}" method="GET" style="display: flex; gap: 15px; width: 100%; align-items: center;">
+                    <div style="flex: 2;">
+                        <select name="project_id" onchange="this.form.submit()" style="border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 8px; width: 100%; font-size: 14px; font-weight: 600;">
+                            <option value="">-- Selecione o Projeto para Analisar Métricas --</option>
+                            @foreach($projects as $p)
+                                <option value="{{ $p->id }}" {{ $selectedProjectId == $p->id ? 'selected' : '' }}>
+                                    💼 {{ $p->client->name }} ➔ {{ $p->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <select name="month" onchange="this.form.submit()" style="border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 8px; width: 100%; font-size: 14px;">
+                            <option value="9" {{ $selectedMonth == 9 ? 'selected' : '' }}>Setembro</option>
+                            <option value="10" {{ $selectedMonth == 10 ? 'selected' : '' }}>Outubro</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit" style="padding: 8px 16px;">🔍 Filtrar Ciclo</button>
+                </form>
+            </div>
+
             <div class="workspace-grid">
                 
                 <!-- Menu Lateral Unificado -->
@@ -299,22 +321,129 @@
                     </div>
 
                     <!-- REQUISITO 6: DASHBOARD DO PROJETO -->
+                                        <!-- PARTE 2: REQUISITO 6 - CENTRAL DE KPIS, EVOLUÇÃO E FUNIL REAL -->
                     <div id="tab-dashboard" class="tab-content">
                         <h3 class="section-title">🖥️ Central de KPIs, Evolução & Funil</h3>
                         <p class="section-desc">Visão consolidada dos resultados analíticos computados pelo sistema em tempo real contra as metas da 8ou80.</p>
-                        <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
-                            ℹ️ Filtre o projeto no menu correspondente para processar o funil de conversão (Visitantes ➔ Leads ➔ Oportunidades ➔ Clientes).
-                        </div>
+
+                        @if($metric)
+                            <!-- Grid de Cards de Alta Gestão -->
+                            <div style="display: grid; grid-template-cols: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 12px; text-center: left;">
+                                    <span style="font-size: 11px; text-transform: uppercase; color: #166534; font-weight: 700; tracking-wider: 0.5px;">Receita Gerada</span>
+                                    <h4 style="font-size: 22px; font-weight: 800; color: #166534; margin: 5px 0 0 0;">R$ {{ number_format($metric->revenue_generated, 2, ',', '.') }}</h4>
+                                </div>
+                                <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 20px; border-radius: 12px; text-center: left;">
+                                    <span style="font-size: 11px; text-transform: uppercase; color: #1e40af; font-weight: 700; tracking-wider: 0.5px;">Clientes Adquiridos</span>
+                                    <h4 style="font-size: 22px; font-weight: 800; color: #1e40af; margin: 5px 0 0 0;">{{ $metric->clients_acquired }}</h4>
+                                </div>
+                                <div style="background: #fffbeb; border: 1px solid #fde68a; padding: 20px; border-radius: 12px; text-center: left;">
+                                    <span style="font-size: 11px; text-transform: uppercase; color: #92400e; font-weight: 700; tracking-wider: 0.5px;">CAC Real Computado</span>
+                                    <h4 style="font-size: 22px; font-weight: 800; color: #92400e; margin: 5px 0 0 0;">R$ {{ number_format($metric->cac, 2, ',', '.') }}</h4>
+                                </div>
+                                <div style="background: #faf5ff; border: 1px solid #e9d5ff; padding: 20px; border-radius: 12px; text-center: left;">
+                                    <span style="font-size: 11px; text-transform: uppercase; color: #6b21a8; font-weight: 700; tracking-wider: 0.5px;">ROAS Atual</span>
+                                    <h4 style="font-size: 22px; font-weight: 800; color: #6b21a8; margin: 5px 0 0 0;">{{ number_format($metric->roas, 1, ',', '.') }}x</h4>
+                                </div>
+                                <div style="background: #fef2f2; border: 1px solid #fca5a5; padding: 20px; border-radius: 12px; text-center: left;">
+                                    <span style="font-size: 11px; text-transform: uppercase; color: #991b1b; font-weight: 700; tracking-wider: 0.5px;">ROI Líquido</span>
+                                    <h4 style="font-size: 22px; font-weight: 800; color: #991b1b; margin: 5px 0 0 0;">{{ number_format($metric->roi, 1, ',', '.') }}%</h4>
+                                </div>
+                            </div>
+
+                            <!-- Comparativo de Metas e Gráficos -->
+                            <div style="display: grid; grid-template-cols: 1fr 1fr; gap: 30px; margin-top: 20px;">
+                                <!-- Painel de Cumprimento Técnico -->
+                                <div style="border: 1px solid #e2e8f0; padding: 24px; border-radius: 12px; background: #ffffff;">
+                                    <h4 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 20px 0;">🎯 Acompanhamento de Metas de Período</h4>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; margin-bottom:5px;">
+                                            <span>Meta de Receita</span>
+                                            <span>{{ number_format($cumprimentoMetas['receita'], 1) }}%</span>
+                                        </div>
+                                        <div style="width:100%; background:#f1f5f9; height:10px; border-radius:5px; overflow:hidden;">
+                                            <div style="width: {{ min($cumprimentoMetas['receita'], 100) }}%; background:#10b981; height:100%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 15px;">
+                                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; margin-bottom:5px;">
+                                            <span>Meta de Leads</span>
+                                            <span>{{ number_format($cumprimentoMetas['leads'], 1) }}%</span>
+                                        </div>
+                                        <div style="width:100%; background:#f1f5f9; height:10px; border-radius:5px; overflow:hidden;">
+                                            <div style="width: {{ min($cumprimentoMetas['leads'], 100) }}%; background:#3b82f6; height:100%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; margin-bottom:5px;">
+                                            <span>Meta de Clientes</span>
+                                            <span>{{ number_format($cumprimentoMetas['clientes'], 1) }}%</span>
+                                        </div>
+                                        <div style="width:100%; background:#f1f5f9; height:10px; border-radius:5px; overflow:hidden;">
+                                            <div style="width: {{ min($cumprimentoMetas['clientes'], 100) }}%; background:#f59e0b; height:100%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Box de Renderização Gráfica -->
+                                <div style="border: 1px solid #e2e8f0; padding: 24px; border-radius: 12px; background: #faf5ff; text-align: center;">
+                                    <h4 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 15px 0;">📊 Funil de Conversão Comercial</h4>
+                                    <div style="display:flex; flex-direction:column; gap:8px; max-width:320px; margin: 0 auto;">
+                                        <div style="background:#0f172a; color:white; padding:8px; border-radius:6px; font-size:12px; font-weight:700;">👥 Visitantes: {{ $metric->visitors }}</div>
+                                        <div style="background:#1e293b; color:white; padding:8px; border-radius:6px; font-size:12px; font-weight:700; width:85%; margin:0 auto;">🎯 Leads: {{ $metric->leads }} ({{ number_format($metric->conversion_visitor_to_lead, 1) }}%)</div>
+                                        <div style="background:#334155; color:white; padding:8px; border-radius:6px; font-size:12px; font-weight:700; width:70%; margin:0 auto;">💼 Oportunidades: {{ $metric->opportunities }} ({{ number_format($metric->conversion_lead_to_opportunity, 1) }}%)</div>
+                                        <div style="background:#10b981; color:white; padding:8px; border-radius:6px; font-size:12px; font-weight:700; width:55%; margin:0 auto;">🤝 Clientes: {{ $metric->clients_acquired }} ({{ number_format($metric->conversion_opportunity_to_client, 1) }}%)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
+                                ℹ️ Nenhuma métrica ou dado bruto cadastrado para este projeto no ciclo selecionado. Acesse a aba "4. Entrada de Métricas" para alimentar o sistema.
+                            </div>
+                        @endif
                     </div>
 
+
                     <!-- REQUISITO 8: DIAGNÓSTICO AUTOMÁTICO -->
+                                        <!-- PARTE 3: REQUISITO 8 - CENTRAL DE ALERTAS E VARREDURA DE PERFORMANCE -->
                     <div id="tab-diagnostico" class="tab-content">
-                        <h3 class="section-title">⚠️ Central de Alertas e Varredura Algorítmica</h3>
-                        <p class="section-desc">Auditorias lógicas automáticas realizadas com base no cruzamento de dados históricos reais cadastrados no MySQL.</p>
-                        <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
-                            🔍 Nenhum desvio ou anomalia operacional detectada para a combinação de dados atual.
-                        </div>
+                        <h3 class="section-title">⚠️ Central de Alertas e Varredura de Performance</h3>
+                        <p class="section-desc">Auditorias algorítmicas realizadas de forma automática com base no cruzamento de dados históricos e metas cadastradas.</p>
+
+                        @if(count($alerts) > 0)
+                            <div style="display: flex; flex-direction: column; gap: 16px;">
+                                @foreach($alerts as $alert)
+                                    @if($alert['type'] === 'danger')
+                                        <!-- Alerta Vermelho: Erros Críticos e Estouro de Custo -->
+                                        <div style="background-color: #fef2f2; border: 1px solid #fca5a5; padding: 18px 24px; border-radius: 10px; border-left: 5px solid #ef4444; display: flex; align-items: center; gap: 14px;">
+                                            <span style="font-size: 20px;">🚨</span>
+                                            <span style="font-size: 14px; font-weight: 600; color: #991b1b;">{{ $alert['message'] }}</span>
+                                        </div>
+                                    @elseif($alert['type'] === 'warning')
+                                        <!-- Alerta Amarelo: Métricas Abaixo do Limiar de Metas -->
+                                        <div style="background-color: #fffbeb; border: 1px solid #fde68a; padding: 18px 24px; border-radius: 10px; border-left: 5px solid #f59e0b; display: flex; align-items: center; gap: 14px;">
+                                            <span style="font-size: 20px;">⚠️</span>
+                                            <span style="font-size: 14px; font-weight: 600; color: #92400e;">{{ $alert['message'] }}</span>
+                                        </div>
+                                    @elseif($alert['type'] === 'success')
+                                        <!-- Alerta Verde: Metas Superadas com Sucesso -->
+                                        <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 18px 24px; border-radius: 10px; border-left: 5px solid #10b981; display: flex; align-items: center; gap: 14px;">
+                                            <span style="font-size: 20px;">🏆</span>
+                                            <span style="font-size: 14px; font-weight: 600; color: #166534;">{{ $alert['message'] }}</span>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @else
+                            <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
+                                🔍 Nenhuma anomalia, estouro de orçamento ou desvio de metas identificado para os parâmetros cronológicos selecionados.
+                            </div>
+                        @endif
                     </div>
+
 
                     <!-- REQUISITO 9: RELATÓRIOS -->
                     <div id="tab-relatorios" class="tab-content">
