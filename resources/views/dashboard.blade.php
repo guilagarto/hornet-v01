@@ -1,151 +1,349 @@
 <x-app-layout>
+    <!-- PARTE 1 DE 5: Estilização do Ecossistema Interno e Topo Executivo -->
     <style>
-        .dashboard-body { background-color: #f3f4f6; font-family: sans-serif; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
-        .header-panel { display: flex; justify-content: space-between; align-items: center; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .header-title { font-size: 24px; font-weight: bold; color: #1e1b4b; margin: 0; }
-        .badge { background-color: #e0e7ff; color: #4338ca; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
-        .card { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 4px solid #4f46e5; }
-        .card.financeiro { border-top-color: #10b981; }
-        .card.pessoal { border-top-color: #f59e0b; }
-        .card-title { font-size: 18px; font-weight: bold; color: #1f2937; margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px; }
-        .grid-inputs { display: grid; grid-template-cols: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .grid-inputs input, .grid-inputs select { border: 1px solid #d1d5db; padding: 10px; border-radius: 8px; font-size: 14px; width: 100%; box-sizing: border-box; }
-        .btn-add { background: #4f46e5; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .btn-add:hover { background: #4338ca; }
-        .chart-box { background: #f9fafb; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; max-width: 500px; margin: 0 auto; text-align: center; }
-        .custom-table { width: 100%; border-collapse: collapse; margin-top: 10px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .custom-table th, .custom-table td { padding: 14px; text-align: left; border-bottom: 1px solid #e5e7eb; }
-        .custom-table th { background-color: #f9fafb; font-size: 12px; font-weight: bold; color: #6b7280; text-transform: uppercase; }
-        .custom-table td { font-size: 14px; color: #374151; }
-        .status-badge { background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
-        .grid-summary { display: grid; grid-template-cols: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .summary-box { padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; display: flex; flex-direction: column; gap: 5px; }
-        .summary-box.green { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
-        .summary-box.red { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
-        .summary-box.blue { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
-        .summary-title { font-size: 12px; text-transform: uppercase; font-weight: bold; opacity: 0.8; }
-        .summary-val { font-size: 24px; font-weight: 800; }
+        .hornet-body { background-color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; padding: 30px; color: #1e293b; }
+        .main-container { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+        
+        /* Cabeçalho Executivo Administrativo */
+        .exec-header { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 20px 30px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 6px solid #0f172a; }
+        .exec-title { font-size: 24px; font-weight: 800; color: #0f172a; margin: 0; }
+        .agency-badge { background-color: #f1f5f9; color: #334155; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; border: 1px solid #e2e8f0; }
+        
+        /* Grid Operacional e Menu Lateral */
+        .workspace-grid { display: grid; grid-template-cols: 290px 1fr; gap: 24px; margin-top: 10px; }
+        .sidebar-menu { background: #ffffff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 8px; height: fit-content; }
+        .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: #475569; font-weight: 600; text-decoration: none; cursor: pointer; transition: all 0.2s; border: none; background: transparent; text-align: left; font-size: 14px; width: 100%; }
+        .menu-item:hover { background: #f8fafc; color: #0f172a; }
+        .menu-item.active { background: #0f172a; color: #ffffff; }
+
+        /* Painel Centralizado de Conteúdo */
+        .content-panel { background: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); min-height: 550px; }
+        .section-title { font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 8px 0; display: flex; align-items: center; gap: 10px; }
+        .section-desc { font-size: 14px; color: #64748b; margin: 0 0 24px 0; }
+
+        /* Grid de Formulários e Inputs */
+        .form-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 24px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { font-size: 13px; font-weight: 600; color: #334155; }
+        .form-group input, .form-group select, .form-group textarea { border: 1px solid #cbd5e1; padding: 10px 14px; border-radius: 8px; font-size: 14px; color: #1e293b; background-color: #ffffff; transition: border 0.15s; width: 100%; box-sizing: border-box; }
+        .form-group input:focus, .form-group select:focus { border-color: #0f172a; outline: none; box-shadow: 0 0 0 2px rgba(15,23,42,0.05); }
+        
+        .btn-submit { background: #0f172a; color: #ffffff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; width: fit-content; }
+        .btn-submit:hover { background: #1e293b; }
+
+        /* Chaves de Visualização Dinâmica */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
     </style>
 
-    <div class="dashboard-body">
-        <div class="container">
+    <div class="hornet-body">
+        <div class="main-container">
             
-            <div class="header-panel">
-                <h2 class="header-title">🚀 Sistema Hornet.v01 — Painel Executivo</h2>
-                <span class="badge">Ambiente Estável</span>
+            <div class="exec-header">
+                <h2 class="exec-title">💼 Módulo Interno Administrativo — Agência 8ou80</h2>
+                <span class="agency-badge">Painel de Gestão MVP</span>
             </div>
-            
-            <!-- 3.1.1 MARKETING -->
-            <div class="card">
-                <h3 class="card-title">📈 3.1.1 Painel de Gestão de Marketing & Contratos</h3>
-                <div class="grid-inputs">
-                    <input type="text" placeholder="Empresa" value="{{ $dadosPython['marketing']['empresa'] ?? '' }}">
-                    <input type="text" value="ROI: {{ $dadosPython['marketing']['roi'] ?? '' }}" readonly style="background:#f3f4f6;">
-                    <input type="text" value="{{ $dadosPython['marketing']['leads'] ?? '' }} Leads Captados" readonly style="background:#f3f4f6;">
-                    <button class="btn-add">➕ Novo Contrato</button>
-                </div>
-                <div class="chart-box">
-                    <span style="font-size:14px; font-weight:bold; color:#6b7280; display:block; margin-bottom:15px;">Mapeamento Analítico do Motor</span>
-                    <canvas id="marketingChart" style="max-height: 250px;"></canvas>
-                </div>
-            </div>
-
-            <!-- 3.1.2 FINANCEIRO CORPORATIVO -->
-            <div class="card financeiro">
-                <h3 class="card-title">🏢 3.1.2 Painel Financeiro Corporativo (Acompanhamento ADM)</h3>
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Cliente / Empresa</th>
-                            <th>Valor Global Contrato</th>
-                            <th>Faturamento Mensal Alocado</th>
-                            <th>Status Operacional</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="font-weight:bold;">{{ $dadosPython['marketing']['empresa'] ?? 'Sem dados' }}</td>
-                            <td>R$ {{ number_format($dadosPython['clientes']['valor_contrato'] ?? 0, 2, ',', '.') }}</td>
-                            <td style="color:#10b981; font-weight:bold;">R$ {{ number_format($dadosPython['clientes']['faturamento_estimado_mensal'] ?? 0, 2, ',', '.') }}</td>
-                            <td><span class="status-badge">{{ $dadosPython['clientes']['status'] ?? 'Inativo' }}</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 3.1.3 FINANCEIRO PESSOAL -->
-            <div class="card pessoal">
-                <h3 class="card-title">💰 3.1.3 Gestão Financeira Pessoal & Fluxo Parcelado</h3>
-                <div class="grid-inputs" style="grid-template-cols: 1fr 2fr; align-items: end;">
-                    <div>
-                        <label style="font-size:12px; font-weight:bold; color:#4b5563; display:block; margin-bottom:5px;">Mês Base:</label>
-                        <select id="mesSelect" onchange="atualizarPainelPessoal()">
-                            <option value="setembro" selected>📅 Setembro</option>
-                            <option value="outubro">⏭️ Outubro</option>
-                            <option value="novembro">⏭️ Novembro</option>
-                        </select>
-                    </div>
-                    <div style="font-size:13px; color:#6b7280; font-style:italic; padding-bottom:12px;">
-                        *Lançamentos parcelados migram automaticamente para os meses subsequentes de forma automatizada.
-                    </div>
+            <!-- PARTE 2 DE 5: Navegação Lateral e Aba de Cadastro de Clientes -->
+            <div class="workspace-grid">
+                
+                <!-- Menu Lateral Baseado no Fluxo de Negócio do Escopo -->
+                <div class="sidebar-menu">
+                    <button class="menu-item active" onclick="switchTab('tab-clientes')">📁 2. Cadastro de Clientes</button>
+                    <button class="menu-item" onclick="switchTab('tab-projetos')">🚀 3. Cadastro de Projetos</button>
+                    <button class="menu-item" onclick="switchTab('tab-metricas')">📊 4. Entrada de Métricas</button>
+                    <button class="menu-item" onclick="switchTab('tab-metas')">🎯 7. Sistema de Metas</button>
+                    <button class="menu-item" onclick="switchTab('tab-dashboard')">🖥️ 6. Dashboard & KPIs</button>
+                    <button class="menu-item" onclick="switchTab('tab-diagnostico')">⚠️ 8. Diagnósticos</button>
+                    <button class="menu-item" onclick="switchTab('tab-relatorios')">📋 9. Relatórios</button>
                 </div>
                 
-                <div class="grid-summary">
-                    <div class="summary-box green">
-                        <span class="summary-title">Total Entradas</span>
-                        <span id="pessoalEntradas" class="summary-val">R$ 0,00</span>
+                <!-- Painel de Exibição de Conteúdo Dinâmico -->
+                <div class="content-panel">
+                    
+                    <!-- REQUISITO 2: CADASTRO DE CLIENTE -->
+                    <div id="tab-clientes" class="tab-content active">
+                        <h3 class="section-title">📁 Cadastro de Cliente Corporativo</h3>
+                        <p class="section-desc">Insira as informações cadastrais básicas da empresa parceira da 8ou80. O cliente final não possui acesso a esta área.</p>
+                        <form action="#" method="POST">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Nome da Empresa</label>
+                                    <input type="text" placeholder="Ex: Alfa Transportes Ltda" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Segmento de Atuação</label>
+                                    <input type="text" placeholder="Ex: Logística / E-commerce" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Responsável na Empresa (Ponto de Contato)</label>
+                                    <input type="text" placeholder="Ex: João Silva" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contato Direto (E-mail ou WhatsApp)</label>
+                                    <input type="text" placeholder="Ex: joao@alfa.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status do Cliente</label>
+                                    <select>
+                                        <option value="active">Ativo (Em Operação)</option>
+                                        <option value="inactive">Inativo / Encerrado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Data de Início do Contrato</label>
+                                    <input type="date" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Observações Estratégicas da Agência</label>
+                                    <textarea rows="3" placeholder="Particularidades sobre o tom de voz da marca, restrições contratuais ou histórico comercial..."></textarea>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-submit">Salvar Cliente no Banco</button>
+                        </form>
                     </div>
-                    <div class="summary-box red">
-                        <span class="summary-title">Total Saídas</span>
-                        <span id="pessoalSaidas" class="summary-val">R$ 0,00</span>
+                    <!-- PARTE 3 DE 5: REQUISITO 3 - CADASTRO DE PROJETOS -->
+                    <div id="tab-projetos" class="tab-content">
+                        <h3 class="section-title">🚀 Cadastro de Projeto Estratégico</h3>
+                        <p class="section-desc">Vincule e configure uma nova operação ou campanha para um cliente corporativo ativo da 8ou80.</p>
+                        <form action="#" method="POST">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Selecione o Cliente Responsável</label>
+                                    <select required>
+                                        <option value="">-- Escolha um Cliente Ativo --</option>
+                                        
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nome Descritivo do Projeto</label>
+                                    <input type="text" placeholder="Ex: Performance e Tráfego Black Friday" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Data de Início das Operações</label>
+                                    <input type="date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Data Prevista de Encerramento</label>
+                                    <input type="date">
+                                </div>
+                                <div class="form-group">
+                                    <label>Investimento Mensal do Contrato (R$)</label>
+                                    <input type="number" step="0.01" placeholder="Ex: 4500.00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status Atual da Demanda</label>
+                                    <select>
+                                        <option value="active">Ativo (Em Execução)</option>
+                                        <option value="planning">Em Planejamento Técnico</option>
+                                        <option value="paused">Pausado temporariamente</option>
+                                        <option value="completed">Concluído / Entregue</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Serviços e Escopo Contratados</label>
+                                    <textarea rows="2" placeholder="Ex: Gestão de anúncios (Google e Meta Ads), SEO On-page e Otimização de Funil."></textarea>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Objetivos de Negócio da Operação</label>
+                                    <textarea rows="2" placeholder="Ex: Alavancar o faturamento em 30% e diminuir o Custo por Lead (CPL) do setor logístico."></textarea>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-submit">Salvar Projeto Estratégico</button>
+                        </form>
                     </div>
-                    <div class="summary-box blue">
-                        <span class="summary-title">Saldo Consolidado</span>
-                        <span id="pessoalSaldo" class="summary-val">R$ 0,00</span>
-                    </div>
-                </div>
-            </div>
+                    <!-- PARTE 4 DE 5: REQUISITO 4 - ENTRADA DE MÉTRICAS POR PERÍODO -->
+                    <div id="tab-metricas" class="tab-content">
+                        <h3 class="section-title">📊 Auditoria Mensal e Lançamento de Dados Brutos</h3>
+                        <p class="section-desc">Insira os resultados obtidos nas auditorias das campanhas para alimentar os cálculos históricos de performance.</p>
+                        <form action="#" method="POST">
+                            <!-- Seleção de Contexto Cronológico -->
+                            <div class="form-grid" style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 20px; margin-bottom: 25px;">
+                                <div class="form-group">
+                                    <label>Selecione o Projeto Alvo</label>
+                                    <select required>
+                                        <option value="">-- Escolha o Projeto --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ano de Referência</label>
+                                    <select required>
+                                        <option value="2026" selected>2026</option>
+                                        <option value="2027">2027</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mês de Análise</label>
+                                    <select required>
+                                        <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option>
+                                        <option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option>
+                                        <option value="7">Julho</option><option value="8">Agosto</option><option value="9" selected>Setembro</option>
+                                        <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Canal / Origem de Tráfego</label>
+                                    <select required>
+                                        <option value="all" selected>Geral Consolidado (All)</option>
+                                        <option value="google_ads">Google Ads</option>
+                                        <option value="meta_ads">Meta Ads (Facebook/Instagram)</option>
+                                        <option value="organic">Orgânico / SEO</option>
+                                    </select>
+                                </div>
+                            </div>
 
-        </div>
-    </div>
+                            <!-- Blocos de Input de Dados Brutos -->
+                            <div style="display: grid; grid-template-cols: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;">
+                                <!-- Coluna Esquerda: Financeiro Base e Funil -->
+                                <div>
+                                    <h4 style="font-size: 15px; font-weight: 700; margin: 0 0 15px 0; color: #1e3a8a; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">💰 Bloco I: Investimento</h4>
+                                    <div class="form-grid" style="grid-template-cols: 1fr; gap: 15px; margin-bottom: 25px;">
+                                        <div class="form-group">
+                                            <label>Investimento Total em Marketing (R$)</label>
+                                            <input type="number" step="0.01" value="0.00" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Investimento Específico em Mídia Paga (R$)</label>
+                                            <input type="number" step="0.01" value="0.00" required>
+                                        </div>
+                                    </div>
 
-    <script src="https://jsdelivr.net"></script>
+                                    <h4 style="font-size: 15px; font-weight: 700; margin: 0 0 15px 0; color: #10b981; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">🏁 Bloco II: Aquisição e Funil</h4>
+                                    <div class="form-grid" style="grid-template-cols: 1fr 1fr; gap: 15px;">
+                                        <div class="form-group"><label>Visitantes Únicos</label><input type="number" value="0" required></div>
+                                        <div class="form-group"><label>Leads Captados</label><input type="number" value="0" required></div>
+                                        <div class="form-group"><label>Leads Qualificados</label><input type="number" value="0" required></div>
+                                        <div class="form-group"><label>Oportunidades</label><input type="number" value="0" required></div>
+                                        <div class="form-group full-width"><label>Clientes Adquiridos</label><input type="number" value="0" required></div>
+                                    </div>
+                                </div>
+
+                                <!-- Coluna Direita: Redes Sociais e Conversão Comercial -->
+                                <div>
+                                    <h4 style="font-size: 15px; font-weight: 700; margin: 0 0 15px 0; color: #b45309; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">📣 Bloco III: Métricas de Marketing</h4>
+                                    <div class="form-grid" style="grid-template-cols: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                                        <div class="form-group"><label>Alcance</label><input type="number" value="0" required></div>
+                                        <div class="form-group"><label>Impressões</label><input type="number" value="0" required></div>
+                                        <div class="form-group"><label>Cliques</label><input type="number" value="0" required></div>
+                                        <div class="form-group"><label>Engajamento</label><input type="number" value="0" required></div>
+                                        <div class="form-group full-width"><label>Novos Seguidores</label><input type="number" value="0" required></div>
+                                    </div>
+
+                                    <h4 style="font-size: 15px; font-weight: 700; margin: 0 0 15px 0; color: #4338ca; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">💵 Bloco IV: Faturamento Atribuído</h4>
+                                    <div class="form-grid" style="grid-template-cols: 1fr; gap: 15px;">
+                                        <div class="form-group"><label>Receita Gerada no Ciclo (R$)</label><input type="number" step="0.01" value="0.00" required></div>
+                                        <div class="form-group"><label>Número Total de Vendas</label><input type="number" value="0" required></div>
+                                        <div class="form-group"><label>Ticket Médio Manual (Opcional, R$)</label><input type="number" step="0.01" placeholder="Vazio para cálculo automático"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-submit" style="margin-top: 25px;">Registrar Dados Mensais</button>
+                        </form>
+                    </div>
+                    <!-- PARTE 5 DE 5: SISTEMA DE METAS, DIAGNÓSTICOS, RELATÓRIOS E SCRIPT DE ABAS -->
+                    
+                    <!-- REQUISITO 7: SISTEMA DE METAS -->
+                    <div id="tab-metas" class="tab-content">
+                        <h3 class="section-title">🎯 Configuração de Metas por Projeto</h3>
+                        <p class="section-desc">Defina os limiares mínimos e máximos aceitáveis para cada período mensal. O motor de cálculo medirá o percentual de cumprimento.</p>
+                        <form action="#" method="POST">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Selecione o Projeto</label>
+                                    <select required>
+                                        <option value="">-- Escolha o Projeto --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ano Alvo</label>
+                                    <select><option value="2026">2026</option><option value="2027">2027</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mês Alvo</label>
+                                    <select>
+                                        <option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group"><label>Meta de Receita Global (R$)</label><input type="number" step="0.01" placeholder="Ex: 50000.00"></div>
+                                <div class="form-group"><label>Meta de Geração de Leads</label><input type="number" placeholder="Ex: 300"></div>
+                                <div class="form-group"><label>Meta de Clientes Adquiridos</label><input type="number" placeholder="Ex: 12"></div>
+                                <div class="form-group"><label>CAC Máximo Tolerável (R$)</label><input type="number" step="0.01" placeholder="Ex: 120.00"></div>
+                                <div class="form-group"><label>ROI Mínimo Esperado (%)</label><input type="number" step="0.1" placeholder="Ex: 200.0"></div>
+                                <div class="form-group"><label>ROAS Mínimo Desejado</label><input type="number" step="0.1" placeholder="Ex: 4.0"></div>
+                            </div>
+                            <button type="button" class="btn-submit">Salvar Metas do Período</button>
+                        </form>
+                    </div>
+
+                    <!-- REQUISITO 6: DASHBOARD DO PROJETO -->
+                    <div id="tab-dashboard" class="tab-content">
+                        <h3 class="section-title">🖥️ Central de KPIs, Evolução & Funil</h3>
+                        <p class="section-desc">Visão consolidada dos resultados computados. Exibição gráfica comparativa contra metas corporativas.</p>
+                        <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
+                            ℹ️ Selecione um cliente e projeto na barra lateral para carregar o funil histórico e os gráficos de evolução.
+                        </div>
+                    </div>
+
+                    <!-- REQUISITO 8: DIAGNÓSTICO AUTOMÁTICO -->
+                    <div id="tab-diagnostico" class="tab-content">
+                        <h3 class="section-title">⚠️ Central de Alertas e Varredura de Performance</h3>
+                        <p class="section-desc">Alertas gerados automaticamente com base em cruzamentos matemáticos rígidos extraídos do banco de dados.</p>
+                        <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
+                            🔍 Sem desvios críticos ou anomalias encontradas para o período selecionado.
+                        </div>
+                    </div>
+
+                    <!-- REQUISITO 9: RELATÓRIOS -->
+                    <div id="tab-relatorios" class="tab-content">
+                        <h3 class="section-title">📋 Emissão de Relatórios Gerenciais</h3>
+                        <p class="section-desc">Página dedicada à compilação e exportação consolidada de resultados por Cliente, Projeto e Período.</p>
+                        <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
+                            🖨️ Selecione os filtros cronológicos para gerar o sumário executivo da operação.
+                        </div>
+                    </div>
+
+                </div> <!-- Fecha .content-panel -->
+            </div> <!-- Fecha .workspace-grid -->
+            
+        </div> <!-- Fecha .main-container -->
+    </div> <!-- Fecha .hornet-body -->
+
+    <!-- Controle Inteligente de Abas em JavaScript Nativo -->
     <script>
-        const dadosPython = @json($dadosPython);
-
-        // Renderização do gráfico nativo (Sem depender do Tailwind)
-        const ctxMkt = document.getElementById('marketingChart').getContext('2d');
-        new Chart(ctxMkt, {
-            type: 'bar',
-            data: {
-                labels: ['CPA (Captação)', 'Métrica de ROI', 'Leads (/10)'],
-                datasets: [{
-                    data: [
-                        dadosPython?.marketing?.custo_captacao || 0, 
-                        (dadosPython?.marketing?.roi || 0) * 10, 
-                        (dadosPython?.marketing?.leads || 0) / 10
-                    ],
-                    backgroundColor: ['#f59e0b', '#10b981', '#3b82f6'],
-                    borderRadius: 6
-                }]
-            },
-            options: { 
-                responsive: true,
-                scales: { y: { beginAtZero: true, display: false } },
-                plugins: { legend: { display: false } }
+        function switchTab(tabId) {
+            // Varre e oculta todos os blocos de conteúdo de abas
+            document.querySelectorAll('.tab-content').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            
+            // Remove o destaque de seleção de todos os botões do menu lateral
+            document.querySelectorAll('.menu-item').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            
+            // Exibe especificamente o container clicado
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.style.display = 'block';
             }
-        });
-
-        // Alternância rápida de meses do Financeiro Pessoal
-        function atualizarPainelPessoal() {
-            const mes = document.getElementById('mesSelect').value;
-            const dadosMes = dadosPython?.pessoal?.[mes] || { entradas: 0, saidas: 0, saldo: 0 };
-
-            document.getElementById('pessoalEntradas').innerText = 'R$ ' + dadosMes.entradas.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            document.getElementById('pessoalSaidas').innerText = 'R$ ' + dadosMes.saidas.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            document.getElementById('pessoalSaldo').innerText = 'R$ ' + dadosMes.saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            
+            // Aplica o estilo de seleção ao botão clicado
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
         }
-        document.addEventListener("DOMContentLoaded", atualizarPainelPessoal);
+
+        // Garante a inicialização correta exibindo apenas a primeira aba ao entrar na página
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.tab-content').forEach(function(el, index) {
+                if (index === 0) {
+                    el.style.display = 'block';
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+        });
     </script>
 </x-app-layout>
