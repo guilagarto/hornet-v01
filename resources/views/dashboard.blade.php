@@ -294,7 +294,7 @@
                                 <div class="form-group"><label>ROI Mínimo Esperado (%)</label><input type="number" name="min_roi" step="0.1" placeholder="Ex: 200.0"></div>
                                 <div class="form-group"><label>ROAS Mínimo Desejado</label><input type="number" name="min_roas" step="0.1" placeholder="Ex: 4.0"></div>
                             </div>
-                            <button type="button" class="btn-submit">Gravar Objetivos de Período</button>
+                            <button type="submit" class="btn-submit">Gravar Objetivos de Período</button>
                         </form>
                     </div>
 

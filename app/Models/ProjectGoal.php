@@ -4,33 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Project extends Model
+class ProjectGoal extends Model
 {
+    // Libera a gravação em massa
     protected $guarded = [];
 
     /**
-     * Um projeto sempre pertence a um único cliente.
+     * Uma meta pertence a um projeto específico.
      */
-    public function client(): BelongsTo
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
-    }
-
-    /**
-     * Um projeto possui um histórico de muitas métricas mensais lançadas.
-     */
-    public function metrics(): HasMany
-    {
-        return $this->hasMany(ProjectMetric::class);
-    }
-
-    /**
-     * Um projeto possui muitas metas registradas ao longo dos meses.
-     */
-    public function goals(): HasMany
-    {
-        return $this->hasMany(ProjectGoal::class);
+        return $this->belongsTo(Project::class);
     }
 }

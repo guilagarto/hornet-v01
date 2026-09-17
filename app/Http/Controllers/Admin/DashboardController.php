@@ -115,18 +115,23 @@ class DashboardController extends Controller
 
     // 🔥 GRAVAÇÃO DE METAS POR PERÍODO (Requisito 7)
     public function storeGoal(Request $request)
-    {
-        $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'year' => 'required|integer',
-            'month' => 'required|integer|between:1,12',
-            'goal_revenue' => 'required|numeric|min:0',
-            'goal_leads' => 'required|integer|min:0',
-            'goal_clients' => 'required|integer|min:0',
-            'max_cac' => 'required|numeric|min:0',
-            'min_roi' => 'required|numeric',
-            'min_roas' => 'required|numeric|min:0',
-        ]);
+{
+    // Converte o mês de setembro para o número 9 caso o formulário envie o texto
+    if ($request->input('month') === 'Setembro' || $request->input('month') == '9') {
+        $request->merge(['month' => 9]);
+    }
+
+    $validated = $request->validate([
+        'project_id' => 'required|exists:projects,id',
+        'year' => 'required|integer',
+        'month' => 'required|integer|between:1,12',
+        'goal_revenue' => 'required|numeric|min:0',
+        'goal_leads' => 'required|integer|min:0',
+        'goal_clients' => 'required|integer|min:0',
+        'max_cac' => 'required|numeric|min:0',
+        'min_roi' => 'required|numeric',
+        'min_roas' => 'required|numeric|min:0',
+    ]);
 
         ProjectGoal::updateOrCreate(
             [
