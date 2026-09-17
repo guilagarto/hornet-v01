@@ -6,7 +6,7 @@
     <title>Hornet v01 - Dashboard</title>
 </head>
 <body style="margin:0; padding:0; background-color:#f3f4f6;">
-    <!-- Renderiza diretamente a sua dashboard linda com CSS embutido -->
+    <!-- Renderiza diretamente o conteúdo do seu Blade sem travas -->
     <main>
         {{ $slot }}
     </main>
