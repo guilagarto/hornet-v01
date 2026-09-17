@@ -166,7 +166,7 @@
                     <div id="tab-metricas" class="tab-content">
                         <h3 class="section-title">📊 Auditoria Mensal e Lançamento de Dados Brutos</h3>
                         <p class="section-desc">Insira as informações brutas colhidas nos canais. O sistema guardará o histórico cronológico para gerar os KPIs automáticos.</p>
-                        <form action="#" method="POST">
+                        <form action="{{ route('admin.metrics.store') }}" method="POST">
                             @csrf
                             <!-- Seleção de Contexto Cronológico -->
                             <div class="form-grid" style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 20px; margin-bottom: 25px;">
@@ -260,7 +260,7 @@
                     <div id="tab-metas" class="tab-content">
                         <h3 class="section-title">🎯 Configuração de Metas de Performance</h3>
                         <p class="section-desc">Defina as metas e limiares operacionais para cada ciclo. O motor de cálculo medirá o percentual de cumprimento em relação aos dados brutos lançados.</p>
-                        <form action="#" method="POST">
+                        <form action="{{ route('admin.goals.store') }}" method="POST">
                             @csrf
                             <div class="form-grid">
                                 <div class="form-group">
