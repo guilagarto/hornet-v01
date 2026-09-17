@@ -1,40 +1,56 @@
 <x-app-layout>
     <!-- PARTE 1 DE 3: Estilização Geral e Topo com Menu de Usuário Autenticado -->
+        <!-- NOVO BLOCO DE ESTILIZAÇÃO INTEGRALMENTE RESPONSIVO -->
     <style>
-        .hornet-body { background-color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; padding: 30px; color: #1e293b; min-height: 100vh; box-sizing: border-box; }
-        .main-container { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+        .hornet-body { background-color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; padding: 15px; color: #1e293b; min-height: 100vh; box-sizing: border-box; }
+        .main-container { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
         
-        /* Topo Administrativo com Dados do Usuário */
-        .admin-top-bar { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 15px 30px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-bottom: 3px solid #e2e8f0; }
-        .admin-brand { font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 8px; }
-        .user-menu-box { display: flex; align-items: center; gap: 20px; }
+        /* Topo Administrativo com Dados do Usuário Adaptável */
+        .admin-top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: #ffffff; padding: 15px 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-bottom: 3px solid #e2e8f0; }
+        .admin-brand { font-size: 18px; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 8px; }
+        .user-menu-box { display: flex; align-items: center; flex-wrap: wrap; gap: 15px; }
         .user-badge { display: flex; align-items: center; gap: 8px; background: #f1f5f9; padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0; font-size: 13px; font-weight: 600; color: #334155; }
         .status-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; display: inline-block; }
         
-        /* Botão Sair (Logout) Nativo */
-        .btn-logout-trigger { background: transparent; border: none; color: #ef4444; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 6px; transition: background 0.2s; }
+        .btn-logout-trigger { background: transparent; border: none; color: #ef4444; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 6px; transition: background 0.2s; white-space: nowrap; }
         .btn-logout-trigger:hover { background: #fef2f2; }
 
-        /* Filtro de Ciclo */
-        .filter-panel { background: white; padding: 15px 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 20px; }
+        /* Filtro de Ciclo Responsivo */
+        .filter-panel { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .filter-form { display: flex; gap: 12px; width: 100%; align-items: center; flex-wrap: wrap; }
+        .filter-select-wide { flex: 2; min-width: 200px; }
+        .filter-select-small { flex: 1; min-width: 120px; }
         
-        /* Layout Base das Abas */
-        .workspace-grid { display: grid; grid-template-cols: 290px 1fr; gap: 24px; margin-top: 10px; }
-        .sidebar-menu { background: #ffffff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 8px; height: fit-content; }
+        /* Grid Mutável: PC = 2 Colunas | Celular = 1 Coluna Unificada */
+        .workspace-grid { display: grid; grid-template-cols: 280px 1fr; gap: 20px; margin-top: 5px; }
+        .sidebar-menu { background: #ffffff; border-radius: 12px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 6px; height: fit-content; }
         .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: #475569; font-weight: 600; text-decoration: none; cursor: pointer; transition: all 0.2s; border: none; background: transparent; text-align: left; font-size: 14px; width: 100%; box-sizing: border-box; }
         .menu-item:hover { background: #f8fafc; color: #0f172a; }
         .menu-item.active { background: #0f172a; color: #ffffff; }
-        .content-panel { background: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); min-height: 550px; }
-        .section-title { font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 8px 0; }
-        .section-desc { font-size: 14px; color: #64748b; margin: 0 0 24px 0; }
-        .form-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 24px; }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        
+        .content-panel { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); min-height: 500px; box-sizing: border-box; }
+        .section-title { font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 8px 0; }
+        .section-desc { font-size: 13px; color: #64748b; margin: 0 0 20px 0; }
+        
+        .form-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
         .form-group.full-width { grid-column: 1 / -1; }
-        .form-group label { font-size: 13px; font-weight: 600; color: #334155; }
-        .form-group input, .form-group select, .form-group textarea { border: 1px solid #cbd5e1; padding: 10px 14px; border-radius: 8px; font-size: 14px; color: #1e293b; box-sizing: border-box; width: 100%; }
-        .btn-submit { background: #0f172a; color: #ffffff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; }
+        .form-group label { font-size: 12px; font-weight: 600; color: #334155; }
+        .form-group input, .form-group select, .form-group textarea { border: 1px solid #cbd5e1; padding: 10px 12px; border-radius: 8px; font-size: 14px; color: #1e293b; box-sizing: border-box; width: 100%; }
+        
+        .btn-submit { background: #0f172a; color: #ffffff; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; width: fit-content; }
         .tab-content { display: none; }
+
+        /* 🔥 REGRA DE OURO DA RESPONSIVIDADE: MEDIA QUERY PARA CELULAR */
+        @media (max-width: 768px) {
+            .workspace-grid { grid-template-cols: 1fr; } /* Transforma o menu lateral e o painel em uma coluna só */
+            .admin-top-bar { flex-direction: column; align-items: flex-start; }
+            .user-menu-box { width: 100%; justify-content: space-between; }
+            .filter-form { flex-direction: column; align-items: stretch; }
+            .filter-select-wide, .filter-select-small, .btn-submit { width: 100% !important; }
+        }
     </style>
+
 
     <div class="hornet-body">
         <div class="main-container">
