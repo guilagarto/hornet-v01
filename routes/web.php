@@ -4,7 +4,11 @@ use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 // Página inicial simplificada
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')->name('home');
+Route::view('/solucoes', 'solucoes')->name('solucoes');
+Route::view('/cases', 'cases')->name('cases');
+Route::view('/blog', 'blog')->name('blog');
+Route::view('/fale-conosco', 'fale_conosco')->name('fale.conosco');
 
 // Grupo protegido por autenticação
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -24,6 +28,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/relatorio-geral', [\App\Http\Controllers\Admin\DashboardController::class, 'relatorioGeral'])->name('relatorio.geral');
 
 
+});
+// 🔐 Grupo Protegido (Módulo Administrativo Interno)
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Painel Principal da Dashboard Gerencial
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Processamento do Banco de Dados MySQL
+    Route::post('/admin/clients', [DashboardController::class, 'storeClient'])->name('admin.clients.store');
+    Route::post('/admin/projects', [DashboardController::class, 'storeProject'])->name('admin.projects.store');
+    Route::post('/admin/metrics', [DashboardController::class, 'storeMetric'])->name('admin.metrics.store');
+    Route::post('/admin/goals', [DashboardController::class, 'storeGoal'])->name('admin.goals.store');
 });
 
 
