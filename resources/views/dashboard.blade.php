@@ -409,50 +409,61 @@
 
                     <!-- REQUISITO 8: DIAGNÓSTICO AUTOMÁTICO -->
                                         <!-- PARTE 3: REQUISITO 8 - CENTRAL DE ALERTAS E VARREDURA DE PERFORMANCE -->
+                                       <!-- REQUISITO 8: CENTRAL DE ALERTAS E DIAGNÓSTICO AUTOMÁTICO -->
                     <div id="tab-diagnostico" class="tab-content">
-                        <h3 class="section-title">⚠️ Central de Alertas e Varredura de Performance</h3>
-                        <p class="section-desc">Auditorias algorítmicas realizadas de forma automática com base no cruzamento de dados históricos e metas cadastradas.</p>
-
-                        @if(count($alerts) > 0)
-                            <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <h3 class="section-title">⚠️ Central de Alertas e Varredura Algorítmica</h3>
+                        <p class="section-desc">Auditorias lógicas automáticas realizadas com base no cruzamento de dados históricos reais cadastrados no MySQL.</p>
+                        
+                        @if(isset($alerts) && count($alerts) > 0)
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
                                 @foreach($alerts as $alert)
-                                    @if($alert['type'] === 'danger')
-                                        <!-- Alerta Vermelho: Erros Críticos e Estouro de Custo -->
-                                        <div style="background-color: #fef2f2; border: 1px solid #fca5a5; padding: 18px 24px; border-radius: 10px; border-left: 5px solid #ef4444; display: flex; align-items: center; gap: 14px;">
-                                            <span style="font-size: 20px;">🚨</span>
-                                            <span style="font-size: 14px; font-weight: 600; color: #991b1b;">{{ $alert['message'] }}</span>
-                                        </div>
-                                    @elseif($alert['type'] === 'warning')
-                                        <!-- Alerta Amarelo: Métricas Abaixo do Limiar de Metas -->
-                                        <div style="background-color: #fffbeb; border: 1px solid #fde68a; padding: 18px 24px; border-radius: 10px; border-left: 5px solid #f59e0b; display: flex; align-items: center; gap: 14px;">
-                                            <span style="font-size: 20px;">⚠️</span>
-                                            <span style="font-size: 14px; font-weight: 600; color: #92400e;">{{ $alert['message'] }}</span>
-                                        </div>
-                                    @elseif($alert['type'] === 'success')
-                                        <!-- Alerta Verde: Metas Superadas com Sucesso -->
-                                        <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 18px 24px; border-radius: 10px; border-left: 5px solid #10b981; display: flex; align-items: center; gap: 14px;">
-                                            <span style="font-size: 20px;">🏆</span>
-                                            <span style="font-size: 14px; font-weight: 600; color: #166534;">{{ $alert['message'] }}</span>
-                                        </div>
-                                    @endif
+                                    <div style="padding: 16px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; line-height: 1.5; display: flex; align-items: center; gap: 12px; border: 1px solid; 
+                                        {{ $alert['type'] == 'danger' ? 'background-color: #fef2f2; color: #991b1b; border-color: #fca5a5;' : '' }}
+                                        {{ $alert['type'] == 'warning' ? 'background-color: #fffbeb; color: #92400e; border-color: #fde68a;' : '' }}
+                                        {{ $alert['type'] == 'success' ? 'background-color: #f0fdf4; color: #166534; border-color: #bbf7d0;' : '' }}">
+                                        <span>{{ $alert['type'] == 'danger' ? '🚨' : ($alert['type'] == 'warning' ? '⚠️' : '✨') }}</span>
+                                        <div>{{ $alert['message'] }}</div>
+                                    </div>
                                 @endforeach
                             </div>
                         @else
                             <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
-                                🔍 Nenhuma anomalia, estouro de orçamento ou desvio de metas identificado para os parâmetros cronológicos selecionados.
+                                🔍 Nenhuma anomalia operacional detectada. O projeto está operando dentro dos limiares normais ou não possui metas/métricas cruzadas para este ciclo.
                             </div>
                         @endif
                     </div>
 
 
+
                     <!-- REQUISITO 9: RELATÓRIOS -->
+                                        <!-- REQUISITO 9: EMISSÃO DE RELATÓRIOS CONSOLIDADOS -->
                     <div id="tab-relatorios" class="tab-content">
-                        <h3 class="section-title">📋 Emissão de Relatórios Consolidados</h3>
+                        <h3 class="section-title">📋 Emissão de Relatórios Gerenciais</h3>
                         <p class="section-desc">Compilação executiva gerencial pronta para auditoria e acompanhamento estratégico interno.</p>
-                        <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
-                            🖨️ Escolha o Período e o Cliente na barra superior para exportar a planilha de KPIs.
-                        </div>
+                        
+                        @if($metric)
+                            <div style="border: 1px solid #cbd5e1; border-radius: 12px; padding: 24px; background: #ffffff;">
+                                <div style="display:flex; justify-content:space-between; border-bottom: 2px solid #0f172a; padding-bottom:10px; margin-bottom:20px;">
+                                    <h4 style="margin:0; font-size:18px; font-weight:800; color:#0f172a;">Sumário Executivo: {{ $activeProject?->name }}</h4>
+                                    <span style="font-weight:700; color:#64748b;">Ciclo: {{ $selectedMonth }}/{{ $selectedYear }}</span>
+                                </div>
+                                <div style="display:grid; grid-template-cols: 1fr 1fr; gap:20px; font-size:14px;">
+                                    <p><strong>Cliente Corporativo:</strong> {{ $activeProject?->client?->name }}</p>
+                                    <p><strong>CPL Calculado:</strong> R$ {{ number_format($metric->cpl, 2, ',', '.') }}</p>
+                                    <p><strong>Faturamento Obtido:</strong> R$ {{ number_format($metric->revenue_generated, 2, ',', '.') }}</p>
+                                    <p><strong>CAC Apurado:</strong> R$ {{ number_format($metric->cac, 2, ',', '.') }}</p>
+                                    <p><strong>ROAS Mídia Paga:</strong> {{ number_format($metric->roas, 1) }}x</p>
+                                    <p><strong>ROI Final:</strong> {{ number_format($metric->roi, 1) }}%</p>
+                                </div>
+                                <button onclick="window.print()" class="btn-submit" style="margin-top:20px; background:#475569;">🖨️ Imprimir Relatório Executivo</button>
+                            </div>
+                        @else
+                            <div style="background: #f8fafc; padding: 40px; border-radius: 12px; text-align: center; border: 2px dashed #cbd5e1; color: #64748b;">
+                                🖨️ Escolha um projeto ativo com dados mensais lançados para emitir o relatório consolidado.
+                            </div>
+                        @endif
                     </div>
+
 
                 </div> <!-- Fecha .content-panel -->
             </div> <!-- Fecha .workspace-grid -->
