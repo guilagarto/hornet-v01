@@ -76,6 +76,10 @@
                     <button class="menu-item" onclick="switchTab('tab-dashboard')">🖥️ 6. Dashboard & KPIs</button>
                     <button class="menu-item" onclick="switchTab('tab-diagnostico')">⚠️ 8. Diagnósticos</button>
                     <button class="menu-item" onclick="switchTab('tab-relatorios')">📋 9. Relatórios</button>
+                    <a href="{{ route('relatorio.geral') }}" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: #4338ca; font-weight: 700; text-decoration: none; font-size: 14px; background-color: #eef2ff; margin-top: 10px; border: 1px dashed #c7d2fe;">
+    🐍 8. Módulo Python BI
+</a>
+
                 </div>
                 
                 <div class="content-panel">

@@ -211,4 +211,18 @@ class DashboardController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Metas estratégicas do período salvas com sucesso!');
     }
+
+        // Adicione este método no seu DashboardController
+        public function relatorioGeral()
+    {
+        // Dispara o script Python em background usando o interpretador do Linux
+        shell_exec('python3 python_scripts/analise.py');
+
+        // Confere se o motor gerou a imagem estática na pasta pública
+        $graficoExiste = file_exists(public_path('grafico_python.png'));
+
+        return view('relatorio_geral', compact('graficoExiste'));
+    }
+
+
 }
