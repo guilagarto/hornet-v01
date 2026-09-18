@@ -32,6 +32,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // ROTA ADICIONADA PARA O RELATÓRIO GERAL
     Route::get('/relatorio-geral', [\App\Http\Controllers\Admin\DashboardController::class, 'relatorioGeral'])->name('relatorio.geral');
+    
+    // Rota exclusiva e totalmente isolada direcionando para o ControllerLeads
+Route::get('/admin/diagnosticos', [\App\Http\Controllers\Admin\ControllerLeads::class, 'index'])->name('admin.diagnosticos.index');
+
 });
 
 // Grupo Protegido (Modulo Administrativo Interno)

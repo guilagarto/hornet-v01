@@ -96,13 +96,14 @@
 
             <div class="workspace-grid">
                 <div class="sidebar-menu">
-                    <button class="menu-item active" onclick="switchTab('tab-clientes')">📁 2. Cadastro de Clientes</button>
-                    <button class="menu-item" onclick="switchTab('tab-projetos')">🚀 3. Cadastro de Projetos</button>
-                    <button class="menu-item" onclick="switchTab('tab-metricas')">📊 4. Entrada de Métricas</button>
-                    <button class="menu-item" onclick="switchTab('tab-metas')">🎯 7. Sistema de Metas</button>
-                    <button class="menu-item" onclick="switchTab('tab-dashboard')">🖥️ 6. Dashboard & KPIs</button>
-                    <button class="menu-item" onclick="switchTab('tab-diagnostico')">⚠️ 8. Diagnósticos</button>
-                    <button class="menu-item" onclick="switchTab('tab-relatorios')">📋 9. Relatórios</button>
+                    <button class="menu-item active" onclick="switchTab('tab-clientes')">📁 1. Cadastro de Clientes</button>
+                    <button class="menu-item" onclick="switchTab('tab-projetos')">🚀 2. Cadastro de Projetos</button>
+                    <button class="menu-item" onclick="switchTab('tab-metricas')">📊 3. Entrada de Métricas</button>
+                    <button class="menu-item" onclick="switchTab('tab-metas')">🎯 4. Sistema de Metas</button>
+                    <button class="menu-item" onclick="switchTab('tab-dashboard')">🖥️ 5. Dashboard & KPIs</button>
+                    <button class="menu-item" onclick="switchTab('tab-diagnostico')">⚠️ 6. Diagnósticos</button>
+                    <button class="menu-item" onclick="window.location.href='{{ route('admin.diagnosticos.index') }}'">📊 7. Diagnóstico Leads</button>
+                    <button class="menu-item" onclick="switchTab('tab-relatorios')">📋 8. Relatórios</button>
                 </div>
                 
                 <div class="content-panel">
