@@ -1,39 +1,50 @@
-<x-app-layout>
-    <div class="diagnostico-container" style="padding: 40px 20px; max-width: 800px; margin: 0 auto;">
-        <h2>Diagnóstico 8ou80</h2>
-        <p class="subtitle">Descubra qual solução faz sentido para o seu negócio.</p>
+<x-site-layout>
+    <div class="diagnostico-container" style="padding: 40px 20px; max-width: 800px; margin: 0 auto; font-family: sans-serif;">
+        
+        <!-- Botão Voltar para a Home (Integrado abaixo do Header) ⬅️ -->
+        <div style="margin-bottom: 25px;">
+            <a href="{{ route('home') }}" style="display: inline-flex; align-items: center; text-decoration: none; color: #4b5563; font-size: 14px; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#4b5563'">
+                <span style="margin-right: 6px; font-size: 16px;">←</span> Voltar para o início
+            </a>
+        </div>
+
+        <h2 style="font-size: 28px; font-weight: bold; margin-bottom: 5px; color: #111827;">Diagnóstico 8ou80</h2>
+        <p class="subtitle" style="color: #6b7280; margin-bottom: 30px; font-size: 16px;">Descubra qual solução faz sentido para o seu negócio.</p>
 
         <form action="{{ route('diagnostico.processar') }}" method="POST" class="diagnostico-form">
             @csrf
 
             <!-- Dados Pessoais / Corporativos -->
-            <fieldset style="margin-bottom: 20px; border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
-                <legend style="padding: 0 10px; font-weight: bold;">Informações de Contato</legend>
+            <fieldset style="margin-bottom: 25px; border: 1px solid #e5e7eb; padding: 25px; border-radius: 8px; background-color: #f9fafb;">
+                <legend style="padding: 0 10px; font-weight: bold; color: #111827; font-size: 16px;">Informações de Contato</legend>
+                
                 <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="nome" style="display:block; margin-bottom:5px;">Seu Nome *</label>
-                    <input type="text" name="nome" id="nome" required value="{{ old('nome') }}" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                    <label for="nome" style="display:block; margin-bottom:5px; font-weight: 500;">Seu Nome *</label>
+                    <input type="text" name="nome" id="nome" required value="{{ old('nome') }}" style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                 </div>
+                
                 <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="email" style="display:block; margin-bottom:5px;">E-mail Corporativo *</label>
-                    <input type="email" name="email" id="email" required value="{{ old('email') }}" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                    <label for="email" style="display:block; margin-bottom:5px; font-weight: 500;">E-mail Corporativo *</label>
+                    <input type="email" name="email" id="email" required value="{{ old('email') }}" style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                 </div>
+                
                 <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="whatsapp" style="display:block; margin-bottom:5px;">WhatsApp / Telefone *</label>
-                    <input type="text" name="whatsapp" id="whatsapp" required value="{{ old('whatsapp') }}" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                    <label for="whatsapp" style="display:block; margin-bottom:5px; font-weight: 500;">WhatsApp / Telefone *</label>
+                    <input type="text" name="whatsapp" id="whatsapp" required value="{{ old('whatsapp') }}" style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                 </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="empresa" style="display:block; margin-bottom:5px;">Nome da Empresa</label>
-                    <input type="text" name="empresa" id="empresa" value="{{ old('empresa') }}" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                
+                <div class="form-group" style="margin-bottom: 5px;">
+                    <label for="empresa" style="display:block; margin-bottom:5px; font-weight: 500;">Nome da Empresa</label>
+                    <input type="text" name="empresa" id="empresa" value="{{ old('empresa') }}" style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                 </div>
             </fieldset>
-
             <!-- Perguntas do Perfil -->
-            <fieldset style="margin-bottom: 20px; border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
-                <legend style="padding: 0 10px; font-weight: bold;">Sobre o seu Negócio</legend>
+            <fieldset style="margin-bottom: 30px; border: 1px solid #e5e7eb; padding: 25px; border-radius: 8px; background-color: #f9fafb;">
+                <legend style="padding: 0 10px; font-weight: bold; color: #111827; font-size: 16px;">Sobre o seu Negócio</legend>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">1. Qual é o seu tipo de negócio?</label>
-                    <select name="tipo_negocio" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">1. Qual é o seu tipo de negócio?</label>
+                    <select name="tipo_negocio" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="Comércio">Comércio</option>
                         <option value="Prestação de serviços">Prestação de serviços</option>
                         <option value="Profissional autônomo">Profissional autônomo</option>
@@ -43,9 +54,9 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">2. Como você vende atualmente?</label>
-                    <select name="canal_venda" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">2. Como você vende atualmente?</label>
+                    <select name="canal_venda" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="Loja física">Loja física</option>
                         <option value="WhatsApp">WhatsApp</option>
                         <option value="Site">Site</option>
@@ -55,9 +66,9 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">3. O que você mais deseja neste momento?</label>
-                    <select name="objetivo" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">3. O que você mais deseja neste momento?</label>
+                    <select name="objetivo" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="Conseguir mais clientes">Conseguir mais clientes</option>
                         <option value="Aumentar vendas">Aumentar vendas</option>
                         <option value="Melhorar presença digital">Melhorar presença digital</option>
@@ -68,27 +79,27 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">4. Situação atual: Você possui site?</label>
-                    <select name="possui_site" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">4. Situação atual: Você possui site?</label>
+                    <select name="possui_site" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="Sim">Sim</option>
                         <option value="Não">Não</option>
                         <option value="Está desatualizado">Está desatualizado</option>
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">5. Já anuncia no Google?</label>
-                    <select name="anuncia_google" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">5. Já anuncia no Google?</label>
+                    <select name="anuncia_google" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="Sim">Sim</option>
                         <option value="Não">Não</option>
                         <option value="Já anunciei anteriormente">Já anunciei anteriormente</option>
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">6. Você recebe contatos pela internet?</label>
-                    <select name="recebe_contatos" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">6. Você recebe contatos pela internet?</label>
+                    <select name="recebe_contatos" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="Sim, regularmente">Sim, regularmente</option>
                         <option value="Alguns">Alguns</option>
                         <option value="Poucos">Poucos</option>
@@ -96,18 +107,18 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">7. Possui Google Perfil da Empresa?</label>
-                    <select name="google_perfil" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">7. Possui Google Perfil da Empresa?</label>
+                    <select name="google_perfil" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="Sim">Sim</option>
                         <option value="Não">Não</option>
                         <option value="Não sei">Não sei</option>
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">8. O que representa uma conversão para seu negócio?</label>
-                    <select name="conversao_representa" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">8. O que representa uma conversão para seu negócio?</label>
+                    <select name="conversao_representa" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="WhatsApp">WhatsApp</option>
                         <option value="Ligação">Ligação</option>
                         <option value="Formulário">Formulário</option>
@@ -118,9 +129,9 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">9. Qual é aproximadamente o valor médio de uma venda/contratação?</label>
-                    <select name="valor_medio" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label style="display:block; margin-bottom:8px; font-weight: 500;">9. Qual é aproximadamente o valor médio de uma venda/contratação?</label>
+                    <select name="valor_medio" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; background-color: #fff;">
                         <option value="Até R$ 100">Até R$ 100</option>
                         <option value="R$ 100–500">R$ 100–500</option>
                         <option value="R$ 500–1.000">R$ 500–1.000</option>
@@ -130,9 +141,9 @@
                 </div>
             </fieldset>
 
-            <button type="submit" class="btn-submit" style="background-color: #111827; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%;">
+            <button type="submit" class="btn-submit" style="background-color: #111827; color: white; padding: 14px 28px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#1f2937'" onmouseout="this.style.backgroundColor='#111827'">
                 Gerar Meu Diagnóstico 🚀
             </button>
         </form>
     </div>
-</x-app-layout>
+</x-site-layout>

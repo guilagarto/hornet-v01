@@ -4,15 +4,14 @@ use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiagnosticoController;
 
-// Página inicial simplificada
+// Pagina Inicial simplificada
 Route::view('/', 'welcome')->name('home');
 Route::view('/solucoes', 'solucoes')->name('solucoes');
 Route::view('/cases', 'cases')->name('cases');
 Route::view('/blog', 'blog')->name('blog');
-Route::view('/fale-conosco', 'fale_conosco')->name('fale.conosco');
 
-// Rota para exibir o formulário na página Fale Conosco
-Route::get('/fale-conosco', [DiagnosticoController::class, 'index'])->name('diagnostico.index');
+// Rota unificada para exibir o formulário de diagnóstico na página Fale Conosco
+Route::get('/fale-conosco', [DiagnosticoController::class, 'index'])->name('fale.conosco');
 
 // Rota para processar os dados enviados do formulário
 Route::post('/diagnostico/processar', [DiagnosticoController::class, 'processar'])->name('diagnostico.processar');
@@ -27,16 +26,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/clients', [DashboardController::class, 'storeClient'])->name('admin.clients.store');
     Route::post('/admin/projects', [DashboardController::class, 'storeProject'])->name('admin.projects.store');
     
-    // 🔥 NOVAS ROTAS ADICIONADAS:
+    // NOVAS ROTAS ADICIONADAS:
     Route::post('/admin/metrics', [DashboardController::class, 'storeMetric'])->name('admin.metrics.store');
     Route::post('/admin/goals', [DashboardController::class, 'storeGoal'])->name('admin.goals.store');
-
-    // 🔥 ROTA ADICIONADA PARA O RELATÓRIO GERAL
+    
+    // ROTA ADICIONADA PARA O RELATÓRIO GERAL
     Route::get('/relatorio-geral', [\App\Http\Controllers\Admin\DashboardController::class, 'relatorioGeral'])->name('relatorio.geral');
-
-
 });
-// 🔐 Grupo Protegido (Módulo Administrativo Interno)
+
+// Grupo Protegido (Modulo Administrativo Interno)
 Route::middleware(['auth', 'verified'])->group(function () {
     // Painel Principal da Dashboard Gerencial
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -47,6 +45,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/metrics', [DashboardController::class, 'storeMetric'])->name('admin.metrics.store');
     Route::post('/admin/goals', [DashboardController::class, 'storeGoal'])->name('admin.goals.store');
 });
-
 
 require __DIR__.'/auth.php';
