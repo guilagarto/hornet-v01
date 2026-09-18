@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DiagnosticoController;
 
 // Página inicial simplificada
 Route::view('/', 'welcome')->name('home');
@@ -9,6 +10,12 @@ Route::view('/solucoes', 'solucoes')->name('solucoes');
 Route::view('/cases', 'cases')->name('cases');
 Route::view('/blog', 'blog')->name('blog');
 Route::view('/fale-conosco', 'fale_conosco')->name('fale.conosco');
+
+// Rota para exibir o formulário na página Fale Conosco
+Route::get('/fale-conosco', [DiagnosticoController::class, 'index'])->name('diagnostico.index');
+
+// Rota para processar os dados enviados do formulário
+Route::post('/diagnostico/processar', [DiagnosticoController::class, 'processar'])->name('diagnostico.processar');
 
 // Grupo protegido por autenticação
 Route::middleware(['auth', 'verified'])->group(function () {
