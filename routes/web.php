@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiagnosticoController;
 use App\Models\Project;
+use App\Models\Plan;
+
 
 // Pagina Inicial simplificada
 Route::view('/', 'welcome')->name('home');
@@ -63,5 +65,24 @@ Route::get('/cases/{id}', function ($id) {
     $project = Project::with(['metrics', 'goals'])->findOrFail($id);
     return view('case-show', compact('project'));
 })->name('cases.show');
+
+// Rota que lista os seus produtos/serviços comerciais à venda
+
+// =========================================================================
+// ROTAS DO CATÁLOGO DE VENDAS COMERCIAIS (TABELA PLANS)
+// =========================================================================
+
+// 1. Rota de Listagem de Soluções/Planos (Usando o nome 'solucoes' exigido pelo menu)
+Route::get('/solucoes', function () {
+    $planos = \App\Models\Plan::where('is_active', true)->get();
+    return view('solucoes', compact('planos'));
+})->name('solucoes');
+
+// 2. Rota Interna de Descrição do Plano Único (Mapeada via Slug)
+Route::get('/solucoes/{slug}', function ($slug) {
+    $plano = \App\Models\Plan::where('slug', $slug)->firstOrFail();
+    return view('solucoes-show', compact('plano'));
+})->name('solucoes.show');
+
 
 require __DIR__.'/auth.php';
