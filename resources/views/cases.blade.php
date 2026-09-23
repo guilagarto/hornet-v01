@@ -17,29 +17,30 @@
         }
     </style>
 
-    <div class="container">
-        <h1>Nossos Cases de Sucesso</h1>
-        
-        <div class="case-row">
-            <div class="case-info">
-                <h3>Mapeamento de Tráfego — Alfa Logística</h3>
-                <p>Reestruturação completa de mídia paga focado em atração B2B. Redução drástica do CPL e otimização do funil comercial de prospecção.</p>
-            </div>
-            <div class="case-stat">
-                <span>Redução de CAC</span>
-                <h4>-34%</h4>
-            </div>
-        </div>
+   <div class="container">
+    <h1>Nossos Cases de Sucesso</h1>
 
-        <div class="case-row">
-            <div class="case-info">
-                <h3>Escalabilidade de Inbound — TechPrime</h3>
-                <p>Implementação de rotinas de nutrição de leads integradas com estratégias de SEO orgânico, gerando fluxo estável de oportunidades qualificadas.</p>
+    @forelse($projects as $project)
+        <!-- Mudamos para passar o ID do projeto no parâmetro da rota -->
+        <a href="{{ route('cases.show', $project->id) }}" style="text-decoration: none; color: inherit; display: block;">
+            <div class="case-row">
+                <div class="case-info">
+                    <h3>{{ $project->name }}</h3>
+                    <p>Serviços: <strong>{{ $project->services_contracted }}</strong></p>
+                    <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Objetivos: {{ $project->objectives }}</p>
+                </div>
+                
+                <!-- Exibe um destaque de performance real com os dados da sua tabela project_metrics -->
+                <div class="case-stat">
+                    <span>Leads Coletados</span>
+                    <h4>+{{ $project->metrics->first()->leads ?? 0 }}</h4>
+                </div>
             </div>
-            <div class="case-stat">
-                <span>Crescimento ROI</span>
-                <h4>+210%</h4>
-            </div>
-        </div>
-    </div>
+        </a>
+    @empty
+        <p style="text-align: center; color: #64748b; margin-top: 20px;">Nenhum case publicado no momento.</p>
+    @endforelse
+</div>
+
+
 </x-site-layout>

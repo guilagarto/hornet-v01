@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiagnosticoController;
+use App\Models\Project;
 
 // Pagina Inicial simplificada
 Route::view('/', 'welcome')->name('home');
@@ -49,5 +50,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/metrics', [DashboardController::class, 'storeMetric'])->name('admin.metrics.store');
     Route::post('/admin/goals', [DashboardController::class, 'storeGoal'])->name('admin.goals.store');
 });
+
+
+// 1. Rota da listagem de cases
+Route::get('/cases', function () {
+    $projects = Project::with('metrics')->orderBy('created_at', 'desc')->get();
+    return view('cases', compact('projects'));
+})->name('cases');
+
+// 2. Rota dinâmica interna mapeada por ID
+Route::get('/cases/{id}', function ($id) {
+    $project = Project::with(['metrics', 'goals'])->findOrFail($id);
+    return view('case-show', compact('project'));
+})->name('cases.show');
 
 require __DIR__.'/auth.php';

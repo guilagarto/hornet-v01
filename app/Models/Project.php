@@ -33,4 +33,9 @@ class Project extends Model
     {
         return $this->hasMany(ProjectGoal::class);
     }
+        /**
+     * Relacionamento: Um projeto possui várias métricas de sucesso.
+     */
+    
+
 }
